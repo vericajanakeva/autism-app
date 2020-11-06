@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>ШАРЕНИ ПЕПЕРУТКИ</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="stylestufs.css">
+
+</head>
+<body style="background-image:url('/images/library.jpg')" class="parallax img-fluid">
+<nav class="navbar navbar-expand-md navbar-dark bg-light">
+    <div class="container">
+        <div style="background-image: url('https://clipartspub.com/images/autism-clipart-butterfly-1.jpg');background-size: cover; background-position:center;background-repeat: no-repeat; height: 100px; width: 100px;"></div>
+        <a class="navbar-brand" href="/home" style="display: flex"><p class="navbar-brand-spans"  style="margin-left: 10px">
+            <span style='color: blue'>Ш</span>
+            <span style='color: red'>A</span>
+            <span style='color: orange'>Р</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: green'>Н</span>
+            <span style='color: red'>И</span>
+            <span style='color: blue'>      </span>
+            <br>
+            <span style='color: red'>П</span>
+            <span style='color: green'>Е</span>
+            <span style='color: orange'>П</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: red'>Р</span>
+            <span style='color: orange'>У</span>
+            <span style='color: blue'>Т</span>
+            <span style='color: green'>К</span>
+            <span style='color: red'>И</span>
+        </p></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault" style="margin-left: 300px" >
+            <ul class="navbar-nav m-auto justify-content-end">
+                <li class="nav-item m-auto" style="padding: 5px">
+                    <a class="nav-link active" href="/home" style="color:white;background-color:#fd2222;border-radius: 10%">Почетна</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/books"  style="color:white;background-color: #fd2222;border-radius: 10%">Ставки</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/admin" style="color:white;background-color: #fd2222;border-radius: 10%">Категории</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/logout" style="color:white;background-color: #fd2222;border-radius: 10%">Одјави се</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <i><a class="nav-link" style="color:white;background-color: #cbff0d;border-radius: 10%">Здраво <span sec:authentication="name"></span>! :)</a></i>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/login" style="color:white;background-color: #fd2222;border-radius: 10%">Најави се</a>
+                </li>
+            </ul>
+
+            <!--            <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()">-->
+            <!--                <a class="btn btn-success btn-sm ml-3" href="cart.html" sec:authorize="!hasRole('ROLE_ADMIN')">-->
+            <!--                    <i class="fa fa-shopping-cart"></i> Cart-->
+            <!--                    &lt;!&ndash;<span class="badge badge-light">3</span>&ndash;&gt;-->
+            <!--                </a>-->
+            <!--            </form>-->
+        </div>
+    </div>
+</nav>
+<br>
+<div th:if="${param.message}" class="container mb-4 rounded" style="background-color:white">
+    <h2 class="text-center text-primary" th:text="${param.message}"></h2>
+</div>
+
+<div th:if="${param.error}" class="container mb-4 rounded" style="background-color:white">
+    <h5 class="text-center text-danger" th:text="${param.error}"></h5>
+</div>
+
+<section class="jumbotron text-center" style="background: rgba(255, 255, 255, 0.7);">
+    <div class="container rounded" style="opacity:1">
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <h2>Здраво админ! </h2>
+        </div>
+        <div style="float: left">
+            <a class="btn btn-large " style="color: white;background: darkgreen" href="/home">Врати се назад</a>
+        </div>
+                <div style="float: right" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="/books/add-new" class="btn btn-block" style="background: darkgreen;color: white">Додади ставка</a>
+                </div>
+        <div class="col bg-light row justify-content-center" >
+            <div class="column" id="hover-effect" th:each="    book : ${books}" style="border:1px solid gray;padding:10px">
+                <br>
+
+               <a class="btn btn-lg btn-light" ><i class="fa fa-trash" th:data-thing="${book.getName()}" onclick="func(this.getAttribute('data-thing'));"><img th:src="${book.getImageBase64()}" style="max-width:180px;max-height:180px; border-radius: 30%;cursor: pointer"/></i></a>
+            <br>
+                <h5  th:text="${book.getName()}">   </h5>
+                <a th:data-thing="${book.getName()}"  onclick="func(this.getAttribute('data-thing'))"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/1024px-Speaker_Icon.svg.png" style="font-size: 55px;height: 50px; width: 50px; display: inline;cursor: pointer"></a>
+
+                <div class="images">
+                    <a class="image" style="font-size: 55px; display: inline;cursor: pointer" onclick="counter(this)"> &#128516;</a>
+                    <a class="image" style="font-size: 55px; display: inline;cursor: pointer" onclick="counter(this)"> &#128525;</a>
+                    <a class="image" style="font-size: 55px; display: inline;cursor: pointer" onclick="counter(this)"> &#128556;</a>
+                </div>
+                <div class="reaction" style="display: inline-block; padding: 5px">
+                    <span style="font-size: 20px;" class="reactions">0</span>
+                    <span style="font-size: 20px;" class="reactions">0</span>
+                    <span style="font-size: 20px;" class="reactions">0</span>
+                </div>
+                <script type="text/javascript">
+                        $('.images a').each(function(eq, el) {
+                        el = $(el);
+                        if(typeof(el.attr('id')) === "undefined") {
+                        el.attr('id', 'element ' + eq);
+                    }
+                    });
+
+                        $('.reaction span').each(function(eq, el) {
+                            el = $(el);
+                            if(typeof(el.attr('id')) === "undefined") {
+                                el.attr('id', '_' + eq);
+                            }
+                        });
+                        $(".image").click(function(){
+                            $(this).attr("selected", "yes");
+                        });
+                        function counter (element) {
+                                var elemen = element.getAttribute('id');
+                                spanid = elemen.replace(/element /, '_');
+                                newvalue = document.getElementById(spanid).innerHTML;
+                                newvalue++;
+                                document.getElementById(spanid).innerHTML = newvalue;
+                        }
+                    function func(s){
+                        var msg = new SpeechSynthesisUtterance(s);
+                        msg.voiceURI = 'native';
+                        msg.volume = 1; // 0 to 1
+                        msg.rate = 1; // 0.1 to 10
+                        msg.pitch = 2; //0 to 2
+                        msg.lang = 'mk';
+                    window.speechSynthesis.speak(msg);
+                    //     Voice chineseVoice = new Voice();
+                    //     chineseVoice.setName("zh");
+                    //     chineseVoice.setAmplitude(100);
+                    //     chineseVoice.setPitch(30);
+                    //     chineseVoice.setSpeed(100);
+                    //     chineseVoice.setVariant("f2");
+                    //
+                    //     Espeak woman = new Espeak(chineseVoice);
+                    //     woman.speak("Nǐ hǎo, shìjiè!");
+
+                    }
+                </script>
+
+
+<form th:action="@{/books/{id}/delete(id=${book.getId()})}" th:method="delete" sec:authorize="hasRole('ROLE_ADMIN')">
+                <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Избриши</i></button>
+            </form>
+            <a th:href="@{/books/{id}/edit(id=${book.getId()})}" class="btn btn-sm btn-info" sec:authorize="hasRole('ROLE_ADMIN')"><i class="fa fa-trash">&nbsp;&nbsp;Измени&nbsp;&nbsp;&nbsp;</i></a>
+            <br>
+            </div>
+            </div>
+        <br><br>
+        </div>
+
+<br>
+
+    <div class="button" style="text-align: center"> <h2>Сакаш да играме?</h2>
+        <br>
+       <a href="/books/game" class="btn btn-light"><img src="https://classroomclipart.com/images/gallery/Clipart/Mathematics/TN_little-boy-playing-number-game-on-tablet-clipart.jpg" style="width: 200px; height: 200px;border-radius:30%"></a>
+        <a href="/books/game" class="btn btn-success btn-large" style="justify-content: center; align-items: center; text-align: center; color: salmon"><img src="https://wrightcountygeeks.org/images/Family%20playing%20game.jpg" style="width: 200px; height: 200px;"></a>
+    <a href="/books/game" class="btn btn-light"><img src="https://friendlystock.com/wp-content/uploads/2018/09/8-black-girl-playing-video-games-cartoon-clipart.jpg" style="width: 200px; height: 200px;border-radius:30%"></a>
+    </div>
+</section>
+
+
+</body>
+</html>
+
+
+
+
+<!--<div class="container mb-4 rounded" style="background-color:white">
+    <div class="row">
+        <div class="col-12" th:if="${books.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Book</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Category</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book : ${books}">
+                        <td><img th:src="${book.getImageBase64()}" style="max-width:80px;max-height:80px"/></td>
+                        <td th:text="${book.getName()}"></td>
+                        <td th:text="${book.getQuantity() > 0 } ? 'In stock' : 'Out of stock'"></td>
+                        <td th:text="${book.getQuantity()}"></td>
+                        <td th:text="${book.getPrice()}"></td>
+                        <td th:text="${book.getCategory() != null} ? ${book.getCategory().getName()} : 'No Category'"></td>
+                        <td class="text-right">
+                            <form th:action="@{/books/{id}/delete(id=${book.getId()})}" th:method="delete" sec:authorize="hasRole('ROLE_ADMIN')">
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>
+                            </form>
+                            <a th:href="@{/books/{id}/edit(id=${book.getId()})}" class="btn btn-sm btn-info" sec:authorize="hasRole('ROLE_ADMIN')"><i class="fa fa-trash">Edit</i></a>
+                            <form th:action="@{/shopping-carts/{id}/add-book(id=${book.getId()})}" th:method="post">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Add book to cart</i></button>
+                            </form>
+                            <form th:action="@{/shopping-carts/{id}/remove-book(id=${book.getId()})}" th:method="post">
+                                <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-trash">Remove book from cart</i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+
+<!--tuka stoese kodot za add new product--->
+    <!--</div>
+</div>-->
+
+
+</body>
+</html>
+
+
+
+
+
+

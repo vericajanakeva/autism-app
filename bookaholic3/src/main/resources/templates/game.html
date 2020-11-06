@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><! <html class="no-js"> <![endif]-->
+<head>
+<!--    <meta charset="utf-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <title>Memory-Game</title>-->
+<!--    <meta name="description" content="">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link rel="shortcut icon" type="image/x-icon" href="game/image/favicon.ico" />-->
+<!--    <link rel="stylesheet" type="text/css" href="game/css/memory.css">-->
+<!--    &lt;!&ndash; Compiled and minified CSS &ndash;&gt;-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!--    &lt;!&ndash; Compiled and minified JavaScript &ndash;&gt;-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <style>
+    body {
+        background-image: url('https://cdn1.vectorstock.com/i/1000x1000/55/75/colorful-jigsaw-seamless-pattern-vector-19755575.jpg');
+        height: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+        /*background-repeat: no-repeat;*/
+        /*background-attachment: fixed;*/
+        /*background-position: center;*/
+    }
+
+    #boxes {
+        /*margin: 0 auto;*/
+        display: inline-block;
+        padding: 20px;
+        background-color: rgba(50,100,200,0.2);
+        width: 100%;
+        margin-top: -90px;
+    }
+
+    div.score-box {
+        margin: 40px;
+        background-color: #ffffff;
+        opacity: 0.6;
+        padding: 1px;
+        filter: alpha(opacity=60);
+        overflow-wrap: normal;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 32px;
+    }
+
+    #score {
+        float: right;
+        color:black;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    #newgame {
+        align-content: center;
+        margin-left:-200px;
+        height: 50px;
+        width: 120px;
+        font-family: Palatino;
+        font-size: 15px;
+    }
+
+    .top-bar {
+        width: 100%;
+        display: inline-block;
+    }
+    .col-13 {
+        width: 33.333%;
+        display: inline-block;
+        float: left;
+    }
+    .main {
+        width: 100%;
+        text-align: center;
+        display: block;
+        position: relative;
+    }
+
+    /* fixe size of the cards */
+    .box {
+        width: 150px;
+        height: 150px;
+        transition: transform 0.5s;
+        border-radius: 14px;
+        cursor: pointer;
+    }
+
+    .box:hover {
+        transform: scale(1.2);
+    }
+    .postgame-class {
+        margin-top: -300px;
+        font-weight: bold;
+        font-size: xx-large;
+        color: #8b20e9;
+    }
+
+</style>
+    <script>
+        var image=[];
+        image[0]="https://www.clker.com/cliparts/p/F/L/P/Y/q/blue-rounded-square-with-number-3-md.png";
+        image[2]="https://ih1.redbubble.net/image.443397673.7205/flat,750x1000,075,f.u6.jpg";
+        image[4]="https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/smiling-face-with-open-mouth.png";
+        image[6]="https://d2gg9evh47fn9z.cloudfront.net/thumb_COLOURBOX34545448.jpg";
+        image[8]="https://5.imimg.com/data5/FY/QK/MY-40752636/fresh-strawberry-250x250.jpg";
+        image[10]="https://cdn.pixabay.com/photo/2012/04/23/15/37/number-38575_1280.png";
+        image[12]="https://i.ndtvimg.com/mt/cooks/2014-11/cucumber.jpg";
+        image[14]="https://cdn.shopify.com/s/files/1/1061/1924/products/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_grande.png?v=1571606036";
+
+        var previous,current;
+        var previousid,currentid;
+        var count=0;
+        var Score=100;
+        var wincondition=0;
+        var name;
+
+        var listy=[];
+        var unicheck=[];
+        for (var i = 0;i<16;i++) {
+            unicheck[i]=1;
+        }
+
+        //check for uniqueness
+        var j=0;
+        while(j<16)
+        {
+            var ran=Math.floor(Math.random() * (16));
+            if(unicheck[ran] != 0)
+            {
+                listy[j]= ran;
+                unicheck[ran] = 0;
+                j++;
+            }
+        }
+
+        // for (var i = 0;i<16;i++)
+        // {
+        // 	console.log(listy[i]);
+        // }
+
+        function inputName(input_name) {
+            name = input_name;
+        }
+
+        function index(member)
+        {
+            for (var i = 0; i <16; i++)
+            {
+                if(listy[i]==member)
+                    return i;
+            }
+        }
+
+        function change(changeit)
+        {
+            Score=Score-2;
+            // if(Score < 0) {
+            //     window.alert("Game Over!");
+            //     window.location.reload();
+            // }
+
+            var x=changeit.split("-");
+            //var y=listy.indexOf(x[1]);
+            var y=index(x[1]);
+            //console.log(x[1]);
+            //console.log(y);
+
+            if(count>1)
+            {
+                previous=current;
+                previousid=currentid;
+
+                if(y % 2 == 0)
+                {
+                    current=image[y];
+                    document.getElementById(changeit).src=image[y];
+                }
+                else
+                {
+                    current=image[y-1];
+                    document.getElementById(changeit).src=image[y-1];
+                }
+
+                currentid=changeit;
+                count++;
+                window.setTimeout(function (){document.getElementById(currentid).src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png"},500);
+            }
+            else if(count==0)
+            {
+                if(y%2==0)
+                {
+                    previous=image[y];
+                    document.getElementById(changeit).src=image[y];
+                }
+                else
+                {
+                    previous=image[y-1];
+                    document.getElementById(changeit).src=image[y-1];
+                }
+
+                previousid=changeit;
+                count++;
+                window.setTimeout(function (){document.getElementById(previousid).src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png"},500);
+            }
+            else if(count==1)
+            {
+                if(y%2==0)
+                {
+                    current=image[y];
+                    document.getElementById(changeit).src=image[y];
+                }
+                else
+                {
+                    current=image[y-1];
+                    document.getElementById(changeit).src=image[y-1];
+                }
+                currentid=changeit;
+                count++;
+                window.setTimeout(function (){document.getElementById(currentid).src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png"},500);
+            }
+
+            if(count>1)
+            {
+                if(previous==current && previousid != currentid)
+                { 													//so that on 2 clicks over the same div it should not click.
+
+                    document.getElementById(previousid).onclick="";
+                    document.getElementById(currentid).onclick="";
+                    document.getElementById(previousid).src=previous;
+                    document.getElementById(currentid).src=current;
+                    document.getElementById(changeit).id=" ";
+                    wincondition++;
+                    console.log(wincondition);
+
+                }
+                else if(previous!=current && previousid!=currentid)
+                {
+
+                    document.getElementById(previousid).src=previous;
+                    document.getElementById(currentid).src=current;
+                    window.setTimeout(function (){document.getElementById(previousid).src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png"},500);
+                    window.setTimeout(function (){document.getElementById(currentid).src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png"},500);
+                }
+
+                if(wincondition==8)
+                {
+                    document.getElementById("result").setAttribute('src', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSsYHUSAd_VgusMCiJDtuTzb-o_bhNcVYo79g&usqp=CAU');
+                    // document.getElementById("postgame").innerHTML="Браво !! Браво !! Успешно ја реши сложувалката!!";
+
+                }
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<header class="top-bar">
+    <div class="col-13"><!--
+				<button onclick="window.location.reload()" id="newgame" data-size="large"><b>Restart</b></button> -->
+        <a class="waves-effect red accent-4 btn-large" onclick="window.location.reload()" id="newgame" style="background:  #fd2222" ><b>ПОЧЕТОК</b></a>
+        <div class="card-panel teal lighten-2" id="score" style="visibility: hidden"></div>
+
+    </div>
+    <br><br><br><br>
+    <div style="margin-left:-200px">
+        <a class="btn btn-large" style="color: white;background: #cbff0d" href="/home">Врати се назад</a>
+    </div>
+    <div style=" margin-left: 800px">
+      <img id="result" style="height: 200px; width: 200px">
+    </div>
+</header>
+
+<div class="jumbotron text-center" style="margin-top:-340px;background: rgba(255, 255, 255, 0.7);">
+<main class="main" style=" opacity: 1;margin-top:-100px;position:relative">
+    <div id="boxes" style="margin-top:-10px">
+        <img class="box" id="box-0" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-0')" >
+        <img class="box" id="box-1" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-1')" >
+        <img class="box" id="box-2" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-2')" >
+        <img class="box" id="box-3" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-3')"> </br>
+        <img class="box" id="box-4" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-4')">
+        <img class="box" id="box-5" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-5')">
+        <img class="box" id="box-6" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-6')">
+        <img class="box" id="box-7" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-7')"></br>
+        <img class="box" id="box-8" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-8')">
+        <img class="box" id="box-9" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-9')">
+        <img class="box" id="box-10" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-10')">
+        <img class="box" id="box-11" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-11')"></br>
+        <img class="box" id="box-12" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-12')">
+        <img class="box" id="box-13" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-13')">
+        <img class="box" id="box-14" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-14')">
+        <img class="box" id="box-15" src="https://www.pinclipart.com/picdir/middle/7-76081_-soloveika-happy-kid-vector.png" onclick="change('box-15')">
+    </div>
+    <div id="postgame" class="postgame-class">
+
+    </div>
+</main>
+</div>
+<!--		<script type="text/javascript">-->
+<!--			var name = prompt("Enter your name: ");-->
+<!--			document.getElementById("score").innerHTML = name + "'s Score: 100";-->
+<!--			inputName(name);-->
+<!--		</script>-->
+
+<!--<script async defer src="https://buttons.github.io/buttons.js"></script>-->
+</body>
+</html>

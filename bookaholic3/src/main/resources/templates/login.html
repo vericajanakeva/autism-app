@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+</head>
+<body style="background-image:url('/images/library.jpg')" class="parallax img-fluid">
+<br><br><br><br><br>
+<div class="container background-color:white">
+    <h5 class="text-danger" style="background-color: white" th:if="${param.error}" th:text="${param.error}"></h5>
+    <h5 class="text-info" th:if="${info}" th:text="${info}"></h5>
+</div>
+<div class="container rounded"style="background-color:white;width: 450px"><br>
+    <form class="form-signin" method="post" action="/login">
+        <h2 class="form-signin-heading">Ве молиме најавете се во системот</h2>
+        <p>
+            <label for="username" class="sr-only">Корисничко име</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+        </p>
+        <p>
+            <label for="password" class="sr-only">Лозинка</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Најава</button>
+    </form>
+    <a href="/signup" class="btn btn-block btn-dark">Немате корисничка сметка?Регистрирајте се овде!</a><br>
+</div>
+</body>
+</html>

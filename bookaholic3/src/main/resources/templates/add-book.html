@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Шарени пеперутки</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+</head>
+<body style="background-image:url('/images/library.jpg');" class="parallax img-fluid">
+<nav class="navbar navbar-expand-md navbar-dark bg-light">
+    <div class="container">
+        <div style="background-image: url('https://clipartspub.com/images/autism-clipart-butterfly-1.jpg');background-size: cover; background-position:center;background-repeat: no-repeat; height: 100px; width: 100px;"></div>
+        <a class="navbar-brand" href="/home" style="display: flex"><p class="navbar-brand-spans"  style="margin-left: 10px">
+            <span style='color: blue'>Ш</span>
+            <span style='color: red'>A</span>
+            <span style='color: orange'>Р</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: green'>Н</span>
+            <span style='color: red'>И</span>
+            <span style='color: blue'>      </span>
+            <br>
+            <span style='color: red'>П</span>
+            <span style='color: green'>Е</span>
+            <span style='color: orange'>П</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: red'>Р</span>
+            <span style='color: orange'>У</span>
+            <span style='color: blue'>Т</span>
+            <span style='color: green'>К</span>
+            <span style='color: red'>И</span>
+        </p></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault" style="margin-left: 300px" >
+            <ul class="navbar-nav m-auto justify-content-end">
+                <li class="nav-item m-auto" style="padding: 5px">
+                    <a class="nav-link active" href="/home" style="color:white;background-color:#fd2222;border-radius: 10%">Почетна</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/books"  style="color:white;background-color: #fd2222;border-radius: 10%">Ставки</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/admin" style="color:white;background-color: #fd2222;border-radius: 10%">Категории</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/logout" style="color:white;background-color: #fd2222;border-radius: 10%">Одјави се</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <i><a class="nav-link" style="color:white;background-color: #cbff0d;border-radius: 10%">Здраво <span sec:authentication="name"></span>! :)</a></i>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/login" style="color:white;background-color: #fd2222;border-radius: 10%">Најави се</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mb-4 rounded"><br><br>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-5 rounded" style="background-color:white">
+            <br>
+            <form action="/books"
+                  method="post"
+                  enctype="multipart/form-data"
+                  th:object="${book}">
+                <input type="text" hidden="hidden" name="id" th:value="${book.getId()}">
+                <div class="form-group">
+                    <label for="name">Име на ставката</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${book.getName()}"
+                           id="name"
+                           name="name"
+                           th:field="*{name}"
+                           required
+                           placeholder="Enter item name">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">id</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${book.getQuantity()}"
+                           id="quantity"
+                           th:field="*{quantity}"
+                           name="quantity"
+                           placeholder="Quantity">
+                </div>
+                <div class="form-group">
+                    <h5 class="text-danger"
+                        th:if="${#fields.hasErrors('price')}"
+                        th:errors="*{price}">
+
+                    </h5>
+                    <label for="price">Вредност</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${book.getPrice()}"
+                           id="price"
+                           th:field="*{price}"
+                           name="price"
+                           placeholder="Price">
+                </div>
+
+                <div class="form-group">
+                    <label>Категорија</label>
+                    <select th:field="*{category.id}" class="form-control">
+                        <option
+                                th:selected="${book.getCategory() != null && book.getCategory().getId() == cat.getId()}"
+                                th:each="cat : ${categories}"
+                                th:value="${cat.getId()}"
+                                th:text="${cat.getName()}">
+                        </option>
+                    </select>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label>Опис</label>-->
+<!--                    <select th:field="*{authors}" name="authors" class="form-control"-->
+<!--                            multiple="multiple">-->
+<!--                        <option-->
+<!--                                th:selected="${book.getAuthors() != null && book.getAuthors().contains(author)}"-->
+<!--                                th:each="author : ${authors}"-->
+<!--                                th:value="${author.getId()}"-->
+<!--                                th:text="${author.getName()}">-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+                <div class="form-group">
+                    <label for="image">Слика</label>
+                    <input name="image" id="image" class="form-control" type="file"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Зачувај</button>
+                <a type="button" class="btn btn-primary" href="/books">Врати се</a>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+

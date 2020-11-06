@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec=""
+      xmlns:https="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>AAWARENESS</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+
+</head>
+<body style="background-image:url('/images/library.jpg')" class="parallax img-fluid">
+<nav class="navbar navbar-expand-md navbar-dark bg-light">
+    <div class="container">
+        <div style="background-image: url('https://clipartspub.com/images/autism-clipart-butterfly-1.jpg');background-size: cover; background-position:center;background-repeat: no-repeat; height: 100px; width: 100px;"></div>
+        <a class="navbar-brand" href="/home" style="display: flex"><p class="navbar-brand-spans" style="margin-left: 10px">
+            <span style='color: blue'>Ш</span>
+            <span style='color: red'>A</span>
+            <span style='color: orange'>Р</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: green'>Н</span>
+            <span style='color: red'>И</span>
+            <span style='color: blue'>      </span>
+            <br>
+            <span style='color: red'>П</span>
+            <span style='color: green'>Е</span>
+            <span style='color: orange'>П</span>
+            <span style='color: blue'>Е</span>
+            <span style='color: red'>Р</span>
+            <span style='color: orange'>У</span>
+            <span style='color: blue'>Т</span>
+            <span style='color: green'>К</span>
+            <span style='color: red'>И</span>
+        </p></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault" style="margin-left: 300px">
+            <ul class="navbar-nav m-auto justify-content-end">
+                <li class="nav-item m-auto" style="padding: 5px">
+                    <a class="nav-link active" href="/home" style="color:white;background-color:#fd2222;border-radius: 10%">Почетна</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/books"  style="color:white;background-color: #fd2222;border-radius: 10%">Ставки</a>
+                </li>
+                <li class="nav-item" style="padding: 5px">
+                    <a class="nav-link" href="/admin" style="color:white;background-color: #fd2222;border-radius: 10%">Категории</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/logout" style="color:white;background-color: #fd2222;border-radius: 10%">Одјави се</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()" style="padding: 5px">
+                    <i><a class="nav-link" style="color:white;background-color: #cbff0d;border-radius: 10%">Здраво <span sec:authentication="name"></span>! :)</a></i>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()" style="padding: 5px">
+                    <a class="nav-link" href="/login" style="color:white;background-color: #fd2222;border-radius: 10%">Најави се</a>
+                </li>
+            </ul>
+
+<!--            <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()">-->
+<!--                <a class="btn btn-success btn-sm ml-3" href="cart.html" sec:authorize="!hasRole('ROLE_ADMIN')">-->
+<!--                    <i class="fa fa-shopping-cart"></i> Cart-->
+<!--                    &lt;!&ndash;<span class="badge badge-light">3</span>&ndash;&gt;-->
+<!--                </a>-->
+<!--            </form>-->
+        </div>
+    </div>
+
+</nav>
+<br><br>
+<section class="jumbotron text-center" style="background: rgba(255, 255, 255, 0.7);">
+    <div class="container" style="opacity:1">
+        <div class="col-md-12" style="margin:0px auto">
+            <h1 style="color:blueviolet;background-color:white; justify-content: center; text-align: center">Здраво! Што ќе учиме денес ?</h1>
+        </div>
+        <a th:href="@{/books/colors}" class="btn btn-lg btn-light"><i class="fa fa-trash"><img src="https://2.bp.blogspot.com/-0mQOGHqeEEo/VIngoWEmZOI/AAAAAAAAA4U/mkdXGMvod-g/s1600/2%2Bsecondary.jpg" class="img-fluid" style="width:170px; height:170px"/></i></a>
+        <a th:href="@{/books/counting}" class="btn btn-lg btn-light"><i class="fa fa-trash"><img src="https://www.primaryict.co.uk/p/pr9060-large.jpg" class="img-fluid" style="width:170px; height:170px"/></i></a>
+        <a th:href="@{/books/emotions}" class="btn btn-lg btn-light"><i class="fa fa-trash"><img src="https://i.pinimg.com/originals/c1/dc/42/c1dc42a15bb6611410acedc8a0716a1a.png" class="img-fluid" style="width:170px; height:170px"/></i></a>
+        <a th:href="@{/books/greetings}" class="btn btn-lg btn-light"><i class="fa fa-trash"><img src="https://i.pinimg.com/originals/41/41/eb/4141ebba79ef6c8fe5f47a46a446249c.jpg" class="img-fluid" style="width:170px; height:170px"/></i></a>
+        <a th:href="@{/books/fruitsvegetables}" class="btn btn-lg btn-light"><i class="fa fa-trash"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR4JDR8r6mnxjwXQ86jyrZ6lNo3SoFo2X6slA&usqp=CAU" class="img-fluid" style="width:170px; height:170px"/></i></a>
+    </div>
+    <br>
+    <div class="button" style="text-align: center; color: blueviolet"> <h2>Или пак, сакаш да играме?</h2>
+        <br>
+        <a href="/books/game" class="btn btn-light"><img src="https://classroomclipart.com/images/gallery/Clipart/Mathematics/TN_little-boy-playing-number-game-on-tablet-clipart.jpg" style="width: 200px; height: 200px;border-radius:30%"></a>
+        <a href="/books/game" class="btn btn-success btn-large" style="justify-content: center; align-items: center; text-align: center"><img src="https://wrightcountygeeks.org/images/Family%20playing%20game.jpg" style="width: 200px; height: 200px"></a>
+        <a href="/books/game" class="btn btn-light"><img src="https://friendlystock.com/wp-content/uploads/2018/09/8-black-girl-playing-video-games-cartoon-clipart.jpg" style="width: 200px; height: 200px;border-radius:30%"></a>
+
+    </div>
+</section>
+
+</body>
+</html>
